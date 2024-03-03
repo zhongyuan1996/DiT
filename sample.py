@@ -23,6 +23,11 @@ def main(args):
     torch.manual_seed(args.seed)
     torch.set_grad_enabled(False)
     device = "cuda" if torch.cuda.is_available() else "cpu"
+    if device == "cuda":
+        print("Using CUDA.")
+    else:
+        print("Using CPU, exit.")
+        exit()
 
     if args.ckpt is None:
         assert args.model == "DiT-XL/2", "Only DiT-XL/2 models are available for auto-download."
@@ -39,6 +44,20 @@ def main(args):
     ckpt_path = args.ckpt or f"DiT-XL-2-{args.image_size}x{args.image_size}.pt"
     state_dict = find_model(ckpt_path)
     model.load_state_dict(state_dict)
+
+    def print_model_parameter_sizes(model):
+        total_params = 0
+        for name, parameter in model.named_parameters():
+            # Parameter size
+            param_size = parameter.size()
+            # Number of parameters
+            num_param = parameter.numel()
+            print(f"{name}: {param_size}, Count: {num_param}")
+            total_params += num_param
+        print(f"Total parameters: {total_params}")
+
+    print_model_parameter_sizes(model)
+
     model.eval()  # important!
     diffusion = create_diffusion(str(args.num_sampling_steps))
     vae = AutoencoderKL.from_pretrained(f"stabilityai/sd-vae-ft-{args.vae}").to(device)
