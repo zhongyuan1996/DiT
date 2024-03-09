@@ -1,0 +1,48 @@
+# Configuration for Multimodal Medical Image and Text Processing
+
+directories:
+  pretrained_models: ./pretrained_models
+  results_dir: ./results
+
+
+
+#TODO: change the name of bert and gpt
+pretrained_models:
+  DiT:
+    name: DiT-XL-2
+    file: DiT-XL-2-256x256.pt
+    image_size: 256
+  BERT:
+    name: BERT-EHR
+    file: BERT-EHR.pt
+  GPT:
+    name: GPT-Clinical-Notes
+    file: GPT-Clinical-Notes.pt
+
+hyperparameters:
+  learning_rate: 1e-4
+  batch_size: 32
+  epochs: 100
+  adam_beta1: 0.9
+  adam_beta2: 0.999
+
+# Additional parameters for training or model specifics can be added here
+# sample usage:
+#import yaml
+#
+## Load the configuration file
+#with open('config.yml', 'r') as file:
+#    config = yaml.safe_load(file)
+#
+## Accessing elements
+#pretrained_dir = config['directories']['pretrained_models']
+#dit_file_path = f"{pretrained_dir}/{config['pretrained_models']['DiT']['file']}"
+#bert_file_path = f"{pretrained_dir}/{config['pretrained_models']['BERT']['file']}"
+#gpt_file_path = f"{pretrained_dir}/{config['pretrained_models']['GPT']['file']}"
+#
+#learning_rate = config['hyperparameters']['learning_rate']
+#batch_size = config['hyperparameters']['batch_size']
+#
+## Example usage
+#print(f"DiT Model Path: {dit_file_path}")
+#print(f"Learning Rate: {learning_rate}")
