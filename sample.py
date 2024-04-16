@@ -42,7 +42,7 @@ def main(args):
     ).to(device)
     # Auto-download a pre-trained model or load a custom DiT checkpoint from train.py:
     ckpt_path = args.ckpt or f"DiT-XL-2-{args.image_size}x{args.image_size}.pt"
-    state_dict = find_model(ckpt_path)
+    state_dict = find_model(ckpt_path, args.downloadPath)
     model.load_state_dict(state_dict)
 
     def print_model_parameter_sizes(model):
@@ -63,7 +63,8 @@ def main(args):
     vae = AutoencoderKL.from_pretrained(f"stabilityai/sd-vae-ft-{args.vae}").to(device)
 
     # Labels to condition the model with (feel free to change):
-    class_labels = [207, 360, 387, 974, 88, 979, 417, 279]
+    # class_labels = [207, 360, 387, 974, 88, 979, 417, 279]
+    class_labels = [1000,1000,1000,1000,1000,1000,1000,1000]
 
     # Create sampling noise:
     n = len(class_labels)
@@ -98,5 +99,7 @@ if __name__ == "__main__":
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--ckpt", type=str, default=None,
                         help="Optional path to a DiT checkpoint (default: auto-download a pre-trained DiT-XL/2 model).")
+    parser.add_argument("--downloadPath", type=str, default="/data/yuan/DiT/pretrained_models")
     args = parser.parse_args()
     main(args)
+    
